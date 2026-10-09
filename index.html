@@ -15,6 +15,8 @@
     button { width: 100%; min-height: 52px; border: 0; border-radius: 12px; padding: 14px 16px; background: #a5b4fc; color: #101827; font: inherit; font-weight: 700; cursor: pointer; }
     #error { margin: 0; color: #fecaca; text-align: center; }
     #result { margin: 0; font-size: 24px; line-height: 1.5; text-align: center; }
+    #copy { margin-top: 20px; }
+    #copy-status { text-align: center; color: #c7d2fe; }
     [hidden] { display: none; }
   </style>
 </head>
@@ -27,6 +29,8 @@
       <p id="error" role="status" aria-live="polite"></p>
     </form>
     <p id="result" role="status" aria-live="polite" hidden></p>
+    <button id="copy" type="button" hidden>Copiar</button>
+    <p id="copy-status" role="status" aria-live="polite" hidden></p>
   </main>
   <script>
     'use strict';
@@ -34,11 +38,23 @@
     const date = document.getElementById('anniversary');
     const error = document.getElementById('error');
     const result = document.getElementById('result');
+    const copy = document.getElementById('copy');
+    const copyStatus = document.getElementById('copy-status');
+    copy.addEventListener('click', async () => {
+      copyStatus.hidden = false;
+      try {
+        await navigator.clipboard.writeText('OMNIA VINCIT AMOR');
+        copyStatus.textContent = 'Copiado!';
+      } catch {
+        copyStatus.textContent = 'Não foi possível copiar. Selecione a frase e copie manualmente.';
+      }
+    });
     function revealIfCorrect() {
       if (date.value !== '22/08/2026') return false;
       form.hidden = true;
       result.textContent = 'A senha é OMNIA VINCIT AMOR';
       result.hidden = false;
+      copy.hidden = false;
       return true;
     }
     date.addEventListener('input', () => {
