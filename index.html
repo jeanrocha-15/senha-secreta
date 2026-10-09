@@ -32,20 +32,25 @@
     const date = document.getElementById('anniversary');
     const error = document.getElementById('error');
     const result = document.getElementById('result');
+    function revealIfCorrect() {
+      if (date.value !== '22/08/2026') return false;
+      form.hidden = true;
+      result.textContent = 'A senha é OMNIA VINCIT AMOR';
+      result.hidden = false;
+      return true;
+    }
     date.addEventListener('input', () => {
       const digits = date.value.replace(/\D/g, '').slice(0, 8);
       date.value = digits.replace(/^(\d{2})(\d)/, '$1/$2').replace(/^(\d{2}\/\d{2})(\d)/, '$1/$2');
       error.textContent = '';
+      revealIfCorrect();
     });
     form.addEventListener('submit', event => {
       event.preventDefault();
-      if (date.value !== '22/08/2026') {
+      if (!revealIfCorrect()) {
         error.textContent = 'Data incorreta';
         return;
       }
-      form.hidden = true;
-      result.textContent = 'A senha é OMNIA VINCIT AMOR';
-      result.hidden = false;
     });
   </script>
 </body>
